@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 /**
@@ -36,8 +37,8 @@ class Model implements DbModelInterface
      */
     public function initCollection()
     {
-        $columns = implode(',',$this->getColumns());
-        $this->sql = "select $columns from " . $this->table_name ;
+        $columns = implode(',', $this->getColumns());
+        $this->sql = "select $columns from " . $this->table_name;
         return $this;
     }
 
@@ -49,8 +50,8 @@ class Model implements DbModelInterface
         $db = new DB();
         $sql = "show columns from  $this->table_name;";
         $results = $db->query($sql);
-        foreach($results as $result) {
-            array_push($this->columns,$result['Field']);
+        foreach ($results as $result) {
+            array_push($this->columns, $result['Field']);
         }
         return $this->columns;
     }
@@ -62,10 +63,15 @@ class Model implements DbModelInterface
      */
     public function sort($params)
     {
-       /*
-              TODO
-              return $this;
-        */
+        if (count($params) > 0) {
+            $last_field = array_key_last($params);
+            $last_order_direction = array_pop($params);
+            $this->sql .= " order by ";
+            foreach ($params as $field => $order_direction) {
+                $this->sql .= " $field $order_direction, ";
+            }
+            $this->sql .= " $last_field $last_order_direction";
+        }
         return $this;
     }
 
@@ -74,11 +80,10 @@ class Model implements DbModelInterface
      */
     public function filter($params)
     {
-       /*
+        /*
               TODO
               return $this;
         */
-        
     }
 
     /**
@@ -128,17 +133,10 @@ class Model implements DbModelInterface
         $values = [];
         $columns = $this->getColumns();
         foreach ($columns as $column) {
-            /*
-            if ( isset($_POST[$column]) && $column !== $this->id_column ) {
-                $values[$column] = $_POST[$column];
-            }
-             * 
-             */
             $column_value = filter_input(INPUT_POST, $column);
-            if ($column_value && $column !== $this->id_column ) {
+            if ($column_value && $column !== $this->id_column) {
                 $values[$column] = $column_value;
             }
-
         }
         return $values;
     }

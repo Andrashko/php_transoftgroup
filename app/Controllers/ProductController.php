@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Core\Controller;
@@ -40,7 +41,7 @@ class ProductController extends Controller
 
         $product = $this->getModel('Product')
             ->initCollection()
-            ->filter(['id',$this->getId()])
+            ->filter(['id', $this->getId()])
             ->getCollection()
             ->selectFirst();
         $this->set('products', $product);
@@ -60,7 +61,7 @@ class ProductController extends Controller
         if ($id) {
             $values = $model->getPostValues();
             $this->set('saved', 1);
-            $model->saveItem($id,$values);
+            $model->saveItem($id, $values);
         }
         $this->set('product', $model->getItem($this->getId()));
 
@@ -74,7 +75,7 @@ class ProductController extends Controller
     {
 
         $model = $this->getModel('Product');
-        $this->set("title","Додавання товару");
+        $this->set("title", "Додавання товару");
         if ($values = $model->getPostValues()) {
             $model->addItem($values);
         }
@@ -88,55 +89,23 @@ class ProductController extends Controller
     {
         $params = [];
         $sortfirst = filter_input(INPUT_POST, 'sortfirst');
-        if ($sortfirst === "price_DESC") {
-            $params['price'] = 'DESC';
-        } else {
-            $params['price'] = 'ASC';
+        if ($sortfirst !== "price_NONE") {
+            if ($sortfirst === "price_DESC") {
+                $params['price'] = 'DESC';
+            } else {
+                $params['price'] = 'ASC';
+            }
         }
         $sortsecond = filter_input(INPUT_POST, 'sortsecond');
-        if ($sortsecond === "qty_DESC") {
-            $params['qty'] = 'DESC';
-        } else {
-            $params['qty'] = 'ASC';
+        if ($sortsecond !== "qty_NONE") {
+            if ($sortsecond === "qty_DESC") {
+                $params['qty'] = 'DESC';
+            } else {
+                $params['qty'] = 'ASC';
+            }
         }
-        
+
         return $params;
-
-    }
-
-    /**
-     * @return array
-     */
-    public function getSortParams_old()
-    {
-        /*
-        if (isset($_GET['sort'])) {
-            $sort = $_GET['sort'];
-        } else 
-        { 
-            $sort = "name";
-        }
-         * 
-         */
-        $sort = filter_input(INPUT_GET, 'sort');
-        if (!isset($sort)) {
-            $sort = "name";
-        }
-        /*
-        if (isset($_GET['order']) && $_GET['order'] == 1) {
-            $order = "ASC";
-        } else {
-            $order = "DESC";
-        }
-         * 
-         */
-        if (filter_input(INPUT_GET, 'order') == 1) {
-            $order = "DESC";
-        } else {
-            $order = "ASC";
-        }
-        
-        return array($sort, $order);
     }
 
     /**
@@ -144,16 +113,6 @@ class ProductController extends Controller
      */
     public function getId()
     {
-        /*
-        if (isset($_GET['id'])) {
-         
-            return $_GET['id'];
-        } else {
-            return NULL;
-        }
-        */
         return filter_input(INPUT_GET, 'id');
     }
-    
-    
 }
