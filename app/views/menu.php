@@ -17,7 +17,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <?php if ($customer) : ?>
-        <li> <a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $customer['first_name'] . " " . $customer["last_name"] ?> </a> </li>
+        <li> <a href="#"><span class="glyphicon glyphicon-user"></span> <?php if (Helper::isAdmin()) : ?> <span class="glyphicon glyphicon-star"></span> <?php endif ?> <?php echo $customer['first_name'] . " " . $customer["last_name"] ?>  </a> </li>
         <li><a href="<?php echo $this->getBP(); ?>/customer/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       <?php else : ?>
         <li><a href="<?php echo $this->getBP(); ?>/customer/register/"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>

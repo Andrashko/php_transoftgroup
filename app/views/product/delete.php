@@ -10,17 +10,25 @@
 <?php
 $product =  $this->get('product');
 ?>
+<?php
 
-<?php if ($product) : ?>
-    <div class="product">
-        <p> Ви справді бажаєте вилучити <?php echo $product['name'] ?>?</p>
-        <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
-            <input name="id" type="hidden" value="<?php echo $product['id']?>">
-            <input type="submit" value="Вилучити">
-        </form>
-    </div>
+use Core\Helper;
+
+if (Helper::isAdmin()) : ?>
+    <?php if ($product) : ?>
+        <div class="product">
+            <p> Ви справді бажаєте вилучити <?php echo $product['name'] ?>?</p>
+            <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
+                <input name="id" type="hidden" value="<?php echo $product['id'] ?>">
+                <input type="submit" value="Вилучити">
+            </form>
+        </div>
+    <?php else : ?>
+        <p>
+            Товару з id в базі даних відсутній
+        </p>
+    <?php endif; ?>
+
 <?php else : ?>
-    <p>
-        Товару з id в базі даних відсутній
-    </p>
-<?php endif; ?>
+    <h4> Тільки з правами адміністратора </h4>
+<?php endif ?>

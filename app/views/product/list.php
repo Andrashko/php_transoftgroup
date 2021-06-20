@@ -20,6 +20,8 @@
 
 <?php
 
+use Core\Helper;
+
 $products =  $this->get('products');
 
 foreach ($products as $product) :
@@ -36,11 +38,13 @@ foreach ($products as $product) :
                 echo 'Нема в наявності';
             }
             ?></p>
-        <?= \Core\Url::getLink('/product/edit', 'Редагувати', array('id' => $product['id'])); ?>
-        </p>
-        <p>
-            <?= \Core\Url::getLink('/product/delete', 'Вилучити', array('id' => $product['id'])); ?>
-        </p>
+        <?php if (Helper::isAdmin()) : ?>
+            <?= \Core\Url::getLink('/product/edit', 'Редагувати', array('id' => $product['id'])); ?>
+            </p>
+            <p>
+                <?= \Core\Url::getLink('/product/delete', 'Вилучити', array('id' => $product['id'])); ?>
+            </p>
+        <?php endif ?>
         <p>
             <?= \Core\Url::getLink('/product/view', 'Деталі', array('id' => $product['id'])); ?>
         </p>

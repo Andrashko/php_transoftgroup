@@ -28,4 +28,14 @@ class Helper
         $model = new $name();
         return $model;
     }
+
+
+    public static function isAdmin()
+    {
+        $customer = self::getCustomer();
+        if ($customer) {
+            return $customer["admin_role"] == 1;
+        }
+        return false;
+    }
 }
