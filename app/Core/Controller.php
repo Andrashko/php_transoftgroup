@@ -67,4 +67,8 @@ class Controller
          App::run($route);
      }
     
+
+     function redirect ($url){
+        header('Location: '.$url);
+     }
 }

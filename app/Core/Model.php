@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Util;
+
 /**
  * Class Model
  */
@@ -64,13 +66,10 @@ class Model implements DbModelInterface
     public function sort($params)
     {
         if (count($params) > 0) {
-            $last_field = array_key_last($params);
-            $last_order_direction = array_pop($params);
-            $this->sql .= " order by ";
-            foreach ($params as $field => $order_direction) {
-                $this->sql .= " $field $order_direction, ";
-            }
-            $this->sql .= " $last_field $last_order_direction";
+            $this->sql .= sprintf(
+                " order by %s",
+                Util::keyValueToList($params, "%s %s")
+            );
         }
         return $this;
     }
@@ -80,10 +79,13 @@ class Model implements DbModelInterface
      */
     public function filter($params)
     {
-        /*
-              TODO
-              return $this;
-        */
+        if (count($params) > 0) {
+            $this->sql .= sprintf(
+                " where %s",
+                Util::keyValueToList($params, "%s=%s")
+            );
+        }
+        return $this;
     }
 
     /**
@@ -151,8 +153,31 @@ class Model implements DbModelInterface
         return $this->id_column;
     }
 
-    public function getId()
+
+    /**
+     * ERROR
+     */
+    public function getId(): int
     {
         return 1;
+    }
+
+
+    public function addItem($values)
+    {
+        $db = new DB();
+        $db->createEntity($this, $values);
+    }
+
+    public function deleteItem($id)
+    {
+        $db = new DB();
+        $db->deleteEntity($this, $id);
+    }
+
+    public function saveItem($id, $values)
+    {
+        $db = new DB();
+        $db->updateEntity($this, $id, $values);
     }
 }

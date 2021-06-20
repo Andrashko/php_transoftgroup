@@ -37,14 +37,14 @@ class ProductController extends Controller
      */
     public function viewAction()
     {
-        $this->set('title', "Карточка товара");
+        $this->set('title', "Картка товару");
 
         $product = $this->getModel('Product')
             ->initCollection()
-            ->filter(['id', $this->getId()])
+            ->filter(['id' => $this->getId()])
             ->getCollection()
             ->selectFirst();
-        $this->set('products', $product);
+        $this->set('product', $product);
 
         $this->renderLayout();
     }
@@ -73,12 +73,31 @@ class ProductController extends Controller
      */
     public function addAction()
     {
-
         $model = $this->getModel('Product');
         $this->set("title", "Додавання товару");
+
         if ($values = $model->getPostValues()) {
             $model->addItem($values);
+            $this->redirect("/product/list");
         }
+        $this->renderLayout();
+    }
+
+    /**
+     *
+     */
+    public function deleteAction()
+    {
+        $model = $this->getModel('Product');
+        $this->set("title", "Вилучення товару");
+        $id = filter_input(INPUT_POST, 'id');
+        if ($id) {
+            $model->deleteItem($id);
+            $this->redirect('/product/list');
+            return;
+        }
+        $this->set('product', $model->getItem($this->getId()));
+
         $this->renderLayout();
     }
 
