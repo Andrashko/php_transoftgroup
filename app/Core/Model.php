@@ -166,7 +166,11 @@ class Model implements DbModelInterface
     public function addItem($values)
     {
         $db = new DB();
-        $db->createEntity($this, $values);
+        $id = $db->createEntity($this, $values);
+        if ($id) {
+            return $this->getItem($id);
+        }
+        return null;
     }
 
     public function deleteItem($id)
@@ -178,6 +182,6 @@ class Model implements DbModelInterface
     public function saveItem($id, $values)
     {
         $db = new DB();
-        $db->updateEntity($this, $id, $values);
+        return  $db->updateEntity($this, $id, $values);
     }
 }

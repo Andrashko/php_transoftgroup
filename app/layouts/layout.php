@@ -17,6 +17,7 @@
         <div id="header">
             <?= $this->get('menu'); ?>
         </div>
+
         <div class="container">
             <?= $this->get('content'); ?>
         </div>

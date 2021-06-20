@@ -77,8 +77,10 @@ class ProductController extends Controller
         $this->set("title", "Додавання товару");
 
         if ($values = $model->getPostValues()) {
-            $model->addItem($values);
-            $this->redirect("/product/list");
+            $newProduct = $model->addItem($values);
+            if ($newProduct){
+               $this->redirect(sprintf("/product/edit?id=%d", $newProduct["id"]));
+            }
         }
         $this->renderLayout();
     }

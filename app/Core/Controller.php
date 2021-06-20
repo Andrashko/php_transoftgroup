@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 /**
@@ -10,8 +11,8 @@ class Controller
 
     public function __construct()
     {
-        $this->set('layoutPath', App::getLayoutDir() . DS. 'layout.php');
-        $this->set('menuPath', App::getViewDir() . DS. 'menu.php');
+        $this->set('layoutPath', App::getLayoutDir() . DS . 'layout.php');
+        $this->set('menuPath', App::getViewDir() . DS . 'menu.php');
     }
 
     protected function set($key, $value)
@@ -26,7 +27,7 @@ class Controller
 
     public function renderLayout()
     {
-        $this->set('menuCollection',$this->getMenuCollection());
+        $this->set('menuCollection', $this->getMenuCollection());
         $menu =  new View($this->data, $this->get('menuPath'));
 
         $content = new View($this->data);
@@ -39,7 +40,7 @@ class Controller
         echo $view->render();
     }
 
-     /**
+    /**
      * @param $name
      * @return mixed
      */
@@ -50,25 +51,28 @@ class Controller
         return $model;
     }
 
-     /**
+    /**
      * @return mixed
      */
-     private function getMenuCollection()
-     {
+    private function getMenuCollection()
+    {
         return $this->getModel('menu')
             ->initCollection()
-            ->sort(array('sort_order'=>'ASC'))
+            ->sort(array('sort_order' => 'ASC'))
             ->getCollection()
             ->select();
-     }
+    }
 
-     protected function forward($route)
-     {
-         App::run($route);
-     }
-    
+    protected function forward($route)
+    {
+        App::run($route);
+    }
 
-     function redirect ($url){
-        header('Location: '.$url);
-     }
+
+    protected function redirect($route)
+    {
+        $server_host = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
+        $url = $server_host . route::getBP() . $route;
+        header("Location: $url");
+    }
 }
