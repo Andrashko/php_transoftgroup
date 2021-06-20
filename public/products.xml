@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+  <product>
+    <id>2</id>
+    <sku>t00002</sku>
+    <name>Телефон 2</name>
+    <price>6696.10</price>
+    <qty>5.000</qty>
+    <description/>
+  </product>
+  <product>
+    <id>3</id>
+    <sku>t00003</sku>
+    <name>Телефон 3</name>
+    <price>10798.80</price>
+    <qty>3.000</qty>
+    <description>Телефон 3</description>
+  </product>
+  <product>
+    <id>4</id>
+    <sku>t00004</sku>
+    <name>Телефон 4 </name>
+    <price>5880.00</price>
+    <qty>5.000</qty>
+    <description>  Дуже довгий опис !</description>
+  </product>
+  <product>
+    <id>6</id>
+    <sku>t00005</sku>
+    <name>Телефон 5</name>
+    <price>5880.00</price>
+    <qty>6.000</qty>
+    <description/>
+  </product>
+  <product>
+    <id>37</id>
+    <sku>sad</sku>
+    <name>dsa</name>
+    <price>0.00</price>
+    <qty>1.000</qty>
+    <description> </description>
+  </product>
+</products>

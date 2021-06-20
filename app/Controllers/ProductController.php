@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Core\Controller;
+use Core\Helper;
 use Core\View;
 
 /**
@@ -136,4 +137,40 @@ class ProductController extends Controller
     {
         return filter_input(INPUT_GET, 'id');
     }
+
+
+     // ...
+     public function unloadAction()
+     {
+            
+         $products = $this->getModel('Product')
+             ->initCollection()
+             ->getCollection()->select();
+ 
+         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><products/>');
+ 
+         foreach ($products as $product) {
+             $xmlProduct = $xml->addChild('product');
+             $xmlProduct->addChild('id',$product['id']);
+             $xmlProduct->addChild('sku',$product['sku']);
+             $xmlProduct->addChild('name',$product['name']);
+             $xmlProduct->addChild('price',$product['price']);
+             $xmlProduct->addChild('qty',$product['qty']);
+             $xmlProduct->addChild('description',$product['description']);
+         }
+         //$xml->asXML('public/products.xml');
+ 
+         $dom = new \DOMDocument("1.0");
+         $dom->preserveWhiteSpace = false;
+         $dom->formatOutput = true;
+         $dom->loadXML($xml->asXML());
+         //$dom->saveXML();
+ 
+         $file = fopen('public/products.xml','w');
+         fwrite($file, $dom->saveXML());
+         fclose($file);
+ 
+ 
+         $this->renderLayout();
+     }
 }
