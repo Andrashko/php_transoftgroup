@@ -82,7 +82,7 @@ class Model implements DbModelInterface
         if (count($params) > 0) {
             $this->sql .= sprintf(
                 " where %s",
-                Util::keyValueToList($params, "%s=%s")
+                Util::keyValueToList(Util::quoteStringValues($params), "%s=%s", " and ")
             );
         }
         return $this;
