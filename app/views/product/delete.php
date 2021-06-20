@@ -6,7 +6,6 @@
 
 <h3> Вилучення товару </h3>
 
-
 <?php
 $product =  $this->get('product');
 ?>

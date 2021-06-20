@@ -9,6 +9,8 @@ class Controller
 {
     protected $data = [];
 
+    protected $validators = [];
+
     public function __construct()
     {
         $this->set('layoutPath', App::getLayoutDir() . DS . 'layout.php');
@@ -74,5 +76,18 @@ class Controller
         $server_host = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
         $url = $server_host . route::getBP() . $route;
         header("Location: $url");
+    }
+
+    protected function validate ($data, $rules){
+        $errors = [];
+        foreach ($rules as $rule){
+            $field = $rule['field'];
+            $validate_function = $rule['validation_function'];
+            if (!$validate_function($data[$field]))
+            {
+                $errors[$field] = $rule['error_message'];
+            } 
+        }
+        return $errors;
     }
 }

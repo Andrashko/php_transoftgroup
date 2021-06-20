@@ -33,6 +33,10 @@ class Model implements DbModelInterface
      * @var array
      */
     protected $params = [];
+    /**
+     * @var array
+     */
+    protected $filters = [];
 
     /**
      * @return $this
@@ -142,6 +146,34 @@ class Model implements DbModelInterface
         }
         return $values;
     }
+
+
+    /**
+     * @return array
+     */
+    public function getFiltredValues()
+    {
+        $values = [];
+        $columns = $this->getColumns();
+        foreach ($columns as $column) {
+            $column_value = filter_input(INPUT_POST, $column, $this->filterOrDefault($column));
+            if ($column_value && $column !== $this->id_column) {
+                $values[$column] = $column_value;
+            }
+        }
+        return $values;
+    }
+
+    protected function filterOrDefault($field){
+        if ($this->filters[$field]){
+            return $this->filters[$field];
+        }
+        return FILTER_DEFAULT;
+    }
+
+    /**
+     * 
+     */
 
     public function getTableName(): string
     {

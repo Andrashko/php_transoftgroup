@@ -23,7 +23,7 @@ $product =  $this->get('product');
             }
         ?></p>
         <p> <?php
-            echo $product["description"];
+            echo htmlspecialchars_decode($product["description"]);
             ?></p>
         <?= \Core\Url::getLink('/product/edit', 'Редагувати', array('id' => $product['id'])); ?>
         </p>

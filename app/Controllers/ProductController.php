@@ -60,7 +60,7 @@ class ProductController extends Controller
         $this->set("title", "Редагування товару");
         $id = filter_input(INPUT_POST, 'id');
         if ($id) {
-            $values = $model->getPostValues();
+            $values = $model->getFiltredValues();
             $this->set('saved', 1);
             $model->saveItem($id, $values);
         }
@@ -76,14 +76,15 @@ class ProductController extends Controller
     {
         $model = $this->getModel('Product');
         $this->set("title", "Додавання товару");
-
-        if ($values = $model->getPostValues()) {
+        $values = $model->getFiltredValues();
+        if ($values) {
             $newProduct = $model->addItem($values);
-            if ($newProduct){
-               $this->redirect(sprintf("/product/edit?id=%d", $newProduct["id"]));
+            if ($newProduct) {
+                $this->redirect(sprintf("/product/edit?id=%d", $newProduct["id"]));
             }
         }
         $this->renderLayout();
+        
     }
 
     /**
@@ -139,38 +140,38 @@ class ProductController extends Controller
     }
 
 
-     // ...
-     public function unloadAction()
-     {
-            
-         $products = $this->getModel('Product')
-             ->initCollection()
-             ->getCollection()->select();
- 
-         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><products/>');
- 
-         foreach ($products as $product) {
-             $xmlProduct = $xml->addChild('product');
-             $xmlProduct->addChild('id',$product['id']);
-             $xmlProduct->addChild('sku',$product['sku']);
-             $xmlProduct->addChild('name',$product['name']);
-             $xmlProduct->addChild('price',$product['price']);
-             $xmlProduct->addChild('qty',$product['qty']);
-             $xmlProduct->addChild('description',$product['description']);
-         }
-         //$xml->asXML('public/products.xml');
- 
-         $dom = new \DOMDocument("1.0");
-         $dom->preserveWhiteSpace = false;
-         $dom->formatOutput = true;
-         $dom->loadXML($xml->asXML());
-         //$dom->saveXML();
- 
-         $file = fopen('public/products.xml','w');
-         fwrite($file, $dom->saveXML());
-         fclose($file);
- 
- 
-         $this->renderLayout();
-     }
+    // ...
+    public function unloadAction()
+    {
+
+        $products = $this->getModel('Product')
+            ->initCollection()
+            ->getCollection()->select();
+
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><products/>');
+
+        foreach ($products as $product) {
+            $xmlProduct = $xml->addChild('product');
+            $xmlProduct->addChild('id', $product['id']);
+            $xmlProduct->addChild('sku', $product['sku']);
+            $xmlProduct->addChild('name', $product['name']);
+            $xmlProduct->addChild('price', $product['price']);
+            $xmlProduct->addChild('qty', $product['qty']);
+            $xmlProduct->addChild('description', $product['description']);
+        }
+        //$xml->asXML('public/products.xml');
+
+        $dom = new \DOMDocument("1.0");
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml->asXML());
+        //$dom->saveXML();
+
+        $file = fopen('public/products.xml', 'w');
+        fwrite($file, $dom->saveXML());
+        fclose($file);
+
+
+        $this->renderLayout();
+    }
 }

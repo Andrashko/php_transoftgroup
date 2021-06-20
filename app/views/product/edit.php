@@ -44,7 +44,7 @@ if (Helper::isAdmin()) : ?>
         <label>
             Опис товару
             </br>
-            <textarea name="description" cols="80" rows="5"> <?php echo $product['description'] ?> </textarea>
+            <textarea name="description" cols="80" rows="5"> <?php echo htmlspecialchars_decode( $product['description']) ?> </textarea>
         </label>
         </br>
         <input type="submit" value="Зберегти">
