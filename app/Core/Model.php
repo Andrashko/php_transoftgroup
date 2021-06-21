@@ -184,7 +184,7 @@ class Model implements DbModelInterface
     protected function optionsOrDefault($field)
     {
         if ($this->filters[$field] && gettype($this->filters[$field]) == "array") {
-            return $this->filters[$field];
+            return $this->filters[$field]["options"];
         }
         return 0;
     }

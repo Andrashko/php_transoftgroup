@@ -21,8 +21,14 @@ class Product extends Model
             "id" => FILTER_SANITIZE_NUMBER_INT,
             "sku" => FILTER_SANITIZE_STRING,
             "name" => FILTER_SANITIZE_STRING,
-            "price" => FILTER_SANITIZE_NUMBER_FLOAT,
-            "qty" => FILTER_SANITIZE_NUMBER_FLOAT,
+            "price" => [ 
+                "filter" => FILTER_SANITIZE_NUMBER_FLOAT,
+                "options" =>  FILTER_FLAG_ALLOW_FRACTION 
+            ],
+            "qty" => [ 
+                "filter" => FILTER_SANITIZE_NUMBER_FLOAT,
+                "options" =>  FILTER_FLAG_ALLOW_FRACTION 
+            ],
             "description" => FILTER_SANITIZE_FULL_SPECIAL_CHARS
         ];
     }

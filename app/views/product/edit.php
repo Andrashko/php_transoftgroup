@@ -19,7 +19,7 @@ use Core\Helper;
 
 if (Helper::isAdmin()) : ?>
 
-    <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
+    <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>" >
         <input name="id" value="<?php echo $product['id'] ?>" hidden>
         <label>
             Код товару
@@ -33,7 +33,7 @@ if (Helper::isAdmin()) : ?>
         </br>
         <label>
             Ціна товару
-            <input name="price" type="number" step="0.01" min="0" value="<?php echo $product['price'] ?>">
+            <input name="price" type="number" step="0.01" min="0" value="<?php echo $product['price'] ?>" lang="en-150">
         </label>
         </br>
         <label>
@@ -44,7 +44,7 @@ if (Helper::isAdmin()) : ?>
         <label>
             Опис товару
             </br>
-            <textarea name="description" cols="80" rows="5"> <?php echo htmlspecialchars_decode( $product['description']) ?> </textarea>
+            <textarea name="description" cols="80" rows="5"><?php echo htmlspecialchars_decode( $product['description'])?></textarea>
         </label>
         </br>
         <input type="submit" value="Зберегти">
