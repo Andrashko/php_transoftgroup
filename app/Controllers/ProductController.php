@@ -23,12 +23,31 @@ class ProductController extends Controller
     {
         $this->set('title', "Товари");
 
+        $maxprice = filter_input(INPUT_POST, "maxprice");
+        if ($maxprice){
+            $maxprice = (float) $maxprice;
+        } else {
+            $maxprice = $this->getModel('Product')->maxValue("price");
+        }
+
+        $minprice = filter_input(INPUT_POST, "minprice");
+        if ($minprice){
+            $minprice = (float) $minprice;
+        } else {
+            $minprice = 0;
+        }
+
         $products = $this->getModel('Product')
             ->initCollection()
+            ->filter(["price" => $maxprice], "<=")
+            ->filter(["price" => $minprice], ">=")
             ->sort($this->getSortParams())
             ->getCollection()
             ->select();
+
         $this->set('products', $products);
+        $this->set('maxprice', $maxprice);
+        $this->set('minprice', $minprice);
 
         $this->renderLayout();
     }

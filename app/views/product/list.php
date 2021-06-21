@@ -14,7 +14,11 @@
         <option <?php echo $sortsecond  === 'qty_ASC' ? 'selected' : ''; ?> value="qty_ASC">по зростанню кількості</option>
         <option <?php echo $sortsecond  === 'qty_DESC' ? 'selected' : ''; ?> value="qty_DESC">по спаданню кількості</option>
     </select>
-    <input type="submit" value="Сортувати">
+    <br>
+    Ціна від: <input type="number" value="<?php echo $this->get('minprice') ?>" min="0" step="0.01" name="minprice"> 
+    Ціна до: <input type="number" value="<?php echo $this->get('maxprice') ?>" min="0" step="0.01" name="maxprice"> 
+    <br>
+    <input type="submit" value="submit">
 </form>
 
 <div class="product">

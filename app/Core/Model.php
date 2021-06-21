@@ -81,16 +81,22 @@ class Model implements DbModelInterface
     /**
      * @param $params
      */
-    public function filter($params)
+    public function filter($params, $sign = "=")
     {
         if (count($params) > 0) {
+            if (strrpos($this->sql , "where")){
+                $template = " and %s ";
+            } else {
+                $template = " where %s";
+            }
             $this->sql .= sprintf(
-                " where %s",
-                Util::keyValueToList(Util::quoteStringValues($params), "%s=%s", " and ")
+                $template,
+                Util::keyValueToList(Util::quoteStringValues($params), "%s$sign%s", " and ")
             );
         }
         return $this;
     }
+
 
     /**
      * @return $this
@@ -227,5 +233,12 @@ class Model implements DbModelInterface
     {
         $db = new DB();
         return  $db->updateEntity($this, $id, $values);
+    }
+
+    public function maxValue($field)
+    {
+        $sql = "select $field from $this->table_name order by $field desc limit 1;";
+        $db = new DB();
+        return $db->query($sql)[0][$field];
     }
 }
