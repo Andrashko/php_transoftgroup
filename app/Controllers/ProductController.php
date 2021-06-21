@@ -84,7 +84,6 @@ class ProductController extends Controller
             }
         }
         $this->renderLayout();
-        
     }
 
     /**
@@ -111,22 +110,28 @@ class ProductController extends Controller
     public function getSortParams()
     {
         $params = [];
-        $sortfirst = filter_input(INPUT_POST, 'sortfirst');
-        if ($sortfirst !== "price_NONE") {
+
+        $sortfirst = Helper::getFilterOrCookie(INPUT_POST, 'sortfirst');
+
+        if ($sortfirst) {
             if ($sortfirst === "price_DESC") {
                 $params['price'] = 'DESC';
             } else {
                 $params['price'] = 'ASC';
             }
+            setcookie("sortfirst", $sortfirst, time() + 600);
         }
-        $sortsecond = filter_input(INPUT_POST, 'sortsecond');
-        if ($sortsecond !== "qty_NONE") {
+        $sortsecond = Helper::getFilterOrCookie(INPUT_POST, 'sortsecond');
+
+        if ($sortsecond) {
             if ($sortsecond === "qty_DESC") {
                 $params['qty'] = 'DESC';
             } else {
                 $params['qty'] = 'ASC';
             }
+            setcookie("sortsecond", $sortsecond, time() + 600);
         }
+
 
         return $params;
     }

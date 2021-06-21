@@ -38,4 +38,15 @@ class Helper
         }
         return false;
     }
+
+    public static function getFilterOrCookie ($type, $value){
+        $result = filter_input($type, $value);
+        if ($result){
+            return $result;
+        }
+        if (isset($_COOKIE[$value])){
+            return $_COOKIE[$value];
+        }
+        return NULL;
+    }
 }
