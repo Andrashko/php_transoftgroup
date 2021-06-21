@@ -36,7 +36,7 @@ class CustomerController extends Controller
     public function LoginAction()
     {
         $this->set('title', "Вхід");
-        $this->set ("invalid_password",  0);
+        $this->set("invalid_password",  0);
 
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
             $email = filter_input(INPUT_POST, 'email');
@@ -51,10 +51,10 @@ class CustomerController extends Controller
                 ->selectFirst();
             if (!empty($customer)) {
                 $_SESSION['id'] = $customer['customer_id'];
-                
+
                 $this->redirect('/index/index');
             } else {
-                $this->set ("invalid_password",  1);
+                $this->set("invalid_password",  1);
             }
         }
         $this->renderLayout();
@@ -79,12 +79,37 @@ class CustomerController extends Controller
     {
         $model = $this->getModel('Customer');
         $this->set("title", "Реєстрація");
-        $values = $model->getPostValues();
+        $values = $model->getFiltredValues();
+        $validation_errors = [];
         if ($values) {
-            $values["password"] = md5($values["password"]);
-            $newCustomer = $model->addItem($values);
-            $this->redirect('/index/index');
+            $email = $values["email"];
+            if ($email) {
+                if ($values["password"] && preg_match("/^[A-z\d]{8,}$/", $values["password"])) {
+                    $password2 = filter_input(INPUT_POST, "password2");
+                    if ($password2 == $values["password"]) {
+                        $values["password"] = md5($values["password"]);
+
+                        $emailIsFree = empty($model->initCollection()
+                            ->filter(['email' => "$email"])
+                            ->getCollection()
+                            ->selectFirst());
+                        if ($emailIsFree) {
+                            $newCustomer = $model->addItem($values);
+                            $this->redirect('/index/index');
+                        } else {
+                            array_push($validation_errors, "Користувач $email вже існує");
+                        }
+                    } else {
+                        array_push($validation_errors, "Паролі не співпадають");
+                    }
+                } else {
+                    array_push($validation_errors, "пароль має містити не менше 8 символів та обов'язково мав і букви і цифри, і лише цифри та англійські букви");
+                }
+            } else {
+                array_push($validation_errors, "Помилка пошти");
+            }
         }
+        $this->set("validation_errors", $validation_errors);
         $this->renderLayout();
     }
 }

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
 --
--- Host: 192.168.20.28    Database: test_shop
+-- Host: 192.168.20.28    Database: test_shotest_shoptest_shoptest_shopcustomerp
 -- ------------------------------------------------------
 -- Server version	5.6.38
 

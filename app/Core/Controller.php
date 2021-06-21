@@ -77,17 +77,4 @@ class Controller
         $url = $server_host . route::getBP() . $route;
         header("Location: $url");
     }
-
-    protected function validate ($data, $rules){
-        $errors = [];
-        foreach ($rules as $rule){
-            $field = $rule['field'];
-            $validate_function = $rule['validation_function'];
-            if (!$validate_function($data[$field]))
-            {
-                $errors[$field] = $rule['error_message'];
-            } 
-        }
-        return $errors;
-    }
 }

@@ -17,3 +17,9 @@
     font-size: 22px;
     font-weight: bold;
 }
+
+.error{
+    color: red;
+    font-size: 15px;
+    
+}

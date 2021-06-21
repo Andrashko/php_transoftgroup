@@ -156,7 +156,7 @@ class Model implements DbModelInterface
         $values = [];
         $columns = $this->getColumns();
         foreach ($columns as $column) {
-            $column_value = filter_input(INPUT_POST, $column, $this->filterOrDefault($column));
+            $column_value = filter_input(INPUT_POST, $column, $this->filterOrDefault($column), $this->optionsOrDefault(($column)));
             if ($column_value && $column !== $this->id_column) {
                 $values[$column] = $column_value;
             }
@@ -164,11 +164,23 @@ class Model implements DbModelInterface
         return $values;
     }
 
-    protected function filterOrDefault($field){
-        if ($this->filters[$field]){
+    protected function filterOrDefault($field)
+    {
+        if ($this->filters[$field]) {
+            if (gettype($this->filters[$field]) == "array") {
+                return $this->filters[$field]["filter"];
+            }
             return $this->filters[$field];
         }
         return FILTER_DEFAULT;
+    }
+
+    protected function optionsOrDefault($field)
+    {
+        if ($this->filters[$field] && gettype($this->filters[$field]) == "array") {
+            return $this->filters[$field];
+        }
+        return 0;
     }
 
     /**

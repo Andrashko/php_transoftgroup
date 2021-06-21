@@ -1,3 +1,13 @@
+<?php 
+    $validation_errors = $this->get("validation_errors");
+?>
+
+<?php if (count($validation_errors)>0): ?>
+    <?php foreach($validation_errors as $error) :?>
+        <p class="error"> <?php echo $error ?> </p>
+    <?php endforeach ?>
+<?php endif ?>
+
 <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
     <label>
         Пошта
@@ -7,6 +17,11 @@
     <label>
         Пароль
         <input name="password" required>
+    </label>
+    </br>
+    <label>
+        Підтвердити пароль
+        <input name="password2" required>
     </label>
     </br>
     <label>
