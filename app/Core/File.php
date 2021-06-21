@@ -13,7 +13,7 @@ class File
 
     protected $backup_dir = "backup";
 
-    protected $expairs = SECONDS_IN_DAY *3;
+    protected $expairs = SECONDS_IN_DAY * 3;
 
     public function __construct($source, $upload_dir)
     {
@@ -61,4 +61,24 @@ class File
             }
         }
     }
+
+    public function remove($condition)
+    {
+        $upload_files = scandir($this->upload_dir);
+        foreach ($upload_files as $filename) {
+            $ext = pathinfo($filename, PATHINFO_EXTENSION) ;
+            if ($ext == "txt" && $condition("$this->upload_dir/$filename")) {
+                unlink("$this->upload_dir/$filename");
+            }
+        }
+    }
+
+    public function containsText($filename, $text){
+        $content = file_get_contents($filename);
+        if (mb_stripos($content, $text)){
+            return true;
+        }   
+        return false;
+    }
+
 }

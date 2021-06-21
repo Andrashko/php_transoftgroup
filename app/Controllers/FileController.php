@@ -25,6 +25,7 @@ class FileController extends Controller
         }
         $this->set("images", $file->showImages());
         $file->backup();
+        $file->remove(fn ($filename) => $file->containsText($filename, "тест"));
         $this->renderLayout();
     }
 }
