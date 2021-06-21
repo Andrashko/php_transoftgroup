@@ -24,6 +24,7 @@ class FileController extends Controller
             $file->uploadFiles();
         }
         $this->set("images", $file->showImages());
+        $file->backup();
         $this->renderLayout();
     }
 }
