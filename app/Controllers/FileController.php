@@ -26,6 +26,17 @@ class FileController extends Controller
         $this->set("images", $file->showImages());
         $file->backup();
         $file->remove(fn ($filename) => $file->containsText($filename, "тест"));
+
+        $file->copy("source.txt", "dest.txt", fn ($text) => $this->reverseWords($text));
         $this->renderLayout();
+    }
+
+    public function reverseWords(string $text): string
+    {
+        $words = mb_split('\s', $text);
+        foreach ($words as $word){
+            $text = str_replace ($word, strrev($word), $text);
+        }
+        return $text;
     }
 }

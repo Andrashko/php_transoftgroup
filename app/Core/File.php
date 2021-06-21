@@ -81,4 +81,9 @@ class File
         return false;
     }
 
+    public function copy($from, $to, $transform){
+        $content = file_get_contents("$this->upload_dir/$from");
+        file_put_contents("$this->upload_dir/$to", $transform($content));
+    }
+
 }
